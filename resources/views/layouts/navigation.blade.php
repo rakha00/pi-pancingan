@@ -15,6 +15,11 @@
                     <x-nav-link :href="route('home')" :active="request()->routeIs('home')" class="flex items-center gap-2">
                         <x-lucide-home class="w-4 h-4" /> {{ __('Home') }}
                     </x-nav-link>
+                    @auth
+                    <x-nav-link :href="route('orders.index')" :active="request()->routeIs('orders.*')" class="flex items-center gap-2">
+                        <x-lucide-package class="w-4 h-4" /> {{ __('Pesanan Saya') }}
+                    </x-nav-link>
+                    @endauth
                 </div>
             </div>
 
@@ -101,6 +106,9 @@
                 {{ __('Home') }}
             </x-responsive-nav-link>
             @auth
+            <x-responsive-nav-link :href="route('orders.index')" :active="request()->routeIs('orders.*')">
+                {{ __('Pesanan Saya') }}
+            </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
                 {{ __('Cart') }} ({{ auth()->user()->cartItems()->count() }})
             </x-responsive-nav-link>

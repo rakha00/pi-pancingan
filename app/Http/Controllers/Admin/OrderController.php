@@ -16,14 +16,14 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        $order->load('items.product', 'user');
+        $order->load('items.product', 'user', 'reports');
         return view('admin.orders.show', compact('order'));
     }
 
     public function update(Request $request, Order $order)
     {
         $request->validate([
-            'status' => 'required|in:pending,paid,failed,canceled',
+            'status' => 'required|in:pending,paid,shipped,delivered,failed,canceled,reported',
         ]);
 
         $order->update([
