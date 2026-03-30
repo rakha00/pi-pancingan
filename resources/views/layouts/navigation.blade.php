@@ -1,34 +1,41 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                    <a href="{{ route('home') }}">
+                        <img src="{{ asset('assets/images/logo.png') }}" alt="Logo" class="block h-10 w-auto">
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
-                        {{ __('Home') }}
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex items-center">
+                    <x-nav-link :href="route('home')" :active="request()->routeIs('home')" class="flex items-center gap-1 dark:text-gray-300">
+                        <x-lucide-home class="w-4 h-4" /> {{ __('Home') }}
                     </x-nav-link>
                     @auth
-                    <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
-                        {{ __('Cart') }} <span class="ml-1 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">{{ auth()->user()->cartItems()->count() }}</span>
+                    <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')" class="flex items-center gap-1 dark:text-gray-300">
+                        <x-lucide-shopping-cart class="w-4 h-4" /> {{ __('Cart') }} 
+                        <span class="ml-1 bg-indigo-600 dark:bg-indigo-500 text-white text-xs font-bold px-2 py-0.5 rounded-full shadow-sm">{{ auth()->user()->cartItems()->count() }}</span>
                     </x-nav-link>
                     @endauth
                 </div>
             </div>
 
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
+            <!-- Settings Dropdown & Theme Toggle -->
+            <div class="hidden sm:flex sm:items-center sm:ms-6 gap-4">
+                
+                <button @click="darkMode = !darkMode" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none rounded-lg text-sm p-2 transition">
+                    <x-lucide-moon class="w-5 h-5 hidden dark:block" />
+                    <x-lucide-sun class="w-5 h-5 block dark:hidden" />
+                </button>
+
                 @auth
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-300 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-100 focus:outline-none transition ease-in-out duration-150 shadow-sm border-gray-100 dark:border-gray-700">
                             <div>{{ Auth::user()->name }}</div>
 
                             <div class="ms-1">
