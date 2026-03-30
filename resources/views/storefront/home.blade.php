@@ -52,11 +52,27 @@
                     </div>
                     <div class="p-5 flex-1 flex flex-col">
                         <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 line-clamp-1 mb-1">{{ $product->name }}</h3>
-                        <p class="text-2xl font-black text-indigo-600 dark:text-indigo-400 mt-auto">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                        <p class="text-2xl font-black text-indigo-600 dark:text-indigo-400 mt-auto mb-4">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
                         
-                        <a href="{{ route('product.show', $product->slug) }}" class="mt-4 flex items-center justify-center gap-2 w-full bg-gray-900 dark:bg-gray-700 hover:bg-indigo-600 dark:hover:bg-indigo-500 text-white font-semibold py-2.5 rounded-lg shadow transition-colors duration-300">
-                            <x-lucide-eye class="w-5 h-5" /> Lihat Detail
-                        </a>
+                        <div class="flex gap-2 w-full mt-auto">
+                            <a href="{{ route('product.show', $product->slug) }}" class="flex-1 flex items-center justify-center gap-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-semibold py-2.5 rounded-lg transition-colors duration-300" title="Lihat Detail Produk">
+                                <x-lucide-eye class="w-4 h-4" /> Detail
+                            </a>
+                            
+                            @auth
+                            <form action="{{ route('cart.store', $product) }}" method="POST" class="flex-[1.5]">
+                                @csrf
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" class="w-full flex items-center justify-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-lg shadow-sm transition-colors duration-300" title="Langsung Tambahkan ke Keranjang">
+                                    <x-lucide-shopping-cart class="w-4 h-4" /> + Keranjang
+                                </button>
+                            </form>
+                            @else
+                            <a href="{{ route('login') }}" class="flex-[1.5] flex items-center justify-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-lg shadow-sm transition-colors duration-300" title="Login untuk Membeli">
+                                <x-lucide-shopping-cart class="w-4 h-4" /> + Keranjang
+                            </a>
+                            @endauth
+                        </div>
                     </div>
                 </div>
                 @empty
