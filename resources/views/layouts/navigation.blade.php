@@ -15,24 +15,22 @@
                     <x-nav-link :href="route('home')" :active="request()->routeIs('home')" class="flex items-center gap-2">
                         <x-lucide-home class="w-4 h-4" /> {{ __('Home') }}
                     </x-nav-link>
-                    @auth
-                    <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')" class="flex items-center gap-2">
-                        <x-lucide-shopping-cart class="w-4 h-4" /> {{ __('Cart') }} 
-                        <span class="ml-1 bg-indigo-600 dark:bg-indigo-500 text-white text-xs font-bold px-2 py-0.5 rounded-full shadow-sm">{{ auth()->user()->cartItems()->count() }}</span>
-                    </x-nav-link>
-                    @endauth
                 </div>
             </div>
 
-            <!-- Settings Dropdown & Theme Toggle -->
+            <!-- Settings Dropdown, Cart & Theme Toggle -->
             <div class="hidden sm:flex sm:items-center sm:ms-6 gap-4">
-                
-                <button @click="darkMode = !darkMode" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none rounded-lg text-sm p-2 transition">
-                    <x-lucide-moon class="w-5 h-5 hidden dark:block" />
-                    <x-lucide-sun class="w-5 h-5 block dark:hidden" />
-                </button>
 
                 @auth
+                <!-- Cart Icon -->
+                <a href="{{ route('cart.index') }}" class="relative text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 p-2 transition flex items-center group">
+                    <x-lucide-shopping-cart class="w-6 h-6 group-hover:scale-110 transition-transform" />
+                    @if(auth()->user()->cartItems()->count() > 0)
+                        <span class="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-[0.65rem] font-bold leading-none text-white transform translate-x-1/4 -translate-y-1/4 bg-red-600 rounded-full shadow-sm">{{ auth()->user()->cartItems()->count() }}</span>
+                    @endif
+                </a>
+
+                <!-- User Dropdown -->
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-300 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-100 focus:outline-none transition ease-in-out duration-150 shadow-sm border-gray-100 dark:border-gray-700">
@@ -76,6 +74,12 @@
                         @endif
                     </div>
                 @endauth
+
+                <!-- Theme Toggle -->
+                <button @click="darkMode = !darkMode" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none rounded-lg text-sm p-2 transition border border-transparent dark:border-gray-700">
+                    <x-lucide-moon class="w-5 h-5 hidden dark:block" />
+                    <x-lucide-sun class="w-5 h-5 block dark:hidden" />
+                </button>
             </div>
 
             <!-- Hamburger -->

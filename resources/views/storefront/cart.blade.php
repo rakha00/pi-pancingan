@@ -69,14 +69,27 @@
                                                 Rp {{ number_format($item->product->price, 0, ',', '.') }}
                                             </td>
                                             <td class="py-6 text-center">
-                                                <form action="{{ route('cart.update', $item) }}" method="POST" class="flex flex-col sm:flex-row items-center justify-center gap-2">
-                                                    @csrf
-                                                    @method('PATCH')
-                                                    <div class="relative flex items-center max-w-[8rem]">
-                                                        <input type="number" name="quantity" value="{{ $item->quantity }}" min="1" max="{{ $item->product->stock }}" class="bg-gray-50 dark:bg-gray-800 border-x-0 border-y sm:border-x border-gray-300 dark:border-gray-600 h-11 font-medium text-center text-gray-900 dark:text-white text-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full pb-6 pt-6 sm:rounded-md">
-                                                    </div>
-                                                    <button type="submit" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 text-sm font-bold bg-indigo-50 dark:bg-indigo-900/20 px-3 py-2 rounded-md transition sm:ml-2">Ubah</button>
-                                                </form>
+                                                <div class="flex items-center justify-center gap-3">
+                                                    <form action="{{ route('cart.update', $item) }}" method="POST">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <input type="hidden" name="quantity" value="{{ $item->quantity - 1 }}">
+                                                        <button type="submit" {{ $item->quantity <= 1 ? 'disabled' : '' }} class="p-1 rounded-md text-gray-500 bg-gray-100 hover:bg-gray-200 dark:text-gray-400 dark:bg-gray-700 dark:hover:bg-gray-600 disabled:opacity-50 transition border border-gray-200 dark:border-gray-600 shadow-sm" title="Kurangi Kuantitas">
+                                                            <x-lucide-minus class="w-4 h-4" />
+                                                        </button>
+                                                    </form>
+                                                    
+                                                    <span class="w-6 text-center font-bold text-gray-900 dark:text-white">{{ $item->quantity }}</span>
+                                                    
+                                                    <form action="{{ route('cart.update', $item) }}" method="POST">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <input type="hidden" name="quantity" value="{{ $item->quantity + 1 }}">
+                                                        <button type="submit" {{ $item->quantity >= $item->product->stock ? 'disabled' : '' }} class="p-1 rounded-md text-gray-500 bg-gray-100 hover:bg-gray-200 dark:text-gray-400 dark:bg-gray-700 dark:hover:bg-gray-600 disabled:opacity-50 transition border border-gray-200 dark:border-gray-600 shadow-sm" title="Tambah Kuantitas">
+                                                            <x-lucide-plus class="w-4 h-4" />
+                                                        </button>
+                                                    </form>
+                                                </div>
                                             </td>
                                             <td class="py-6 text-right font-black text-gray-900 dark:text-white text-lg">
                                                 Rp {{ number_format($subtotal, 0, ',', '.') }}
