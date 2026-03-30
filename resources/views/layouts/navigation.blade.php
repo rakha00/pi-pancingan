@@ -11,12 +11,12 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex items-center">
-                    <x-nav-link :href="route('home')" :active="request()->routeIs('home')" class="flex items-center gap-1 dark:text-gray-300">
+                <div class="hidden space-x-4 sm:ms-10 sm:flex items-center">
+                    <x-nav-link :href="route('home')" :active="request()->routeIs('home')" class="flex items-center gap-2">
                         <x-lucide-home class="w-4 h-4" /> {{ __('Home') }}
                     </x-nav-link>
                     @auth
-                    <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')" class="flex items-center gap-1 dark:text-gray-300">
+                    <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')" class="flex items-center gap-2">
                         <x-lucide-shopping-cart class="w-4 h-4" /> {{ __('Cart') }} 
                         <span class="ml-1 bg-indigo-600 dark:bg-indigo-500 text-white text-xs font-bold px-2 py-0.5 rounded-full shadow-sm">{{ auth()->user()->cartItems()->count() }}</span>
                     </x-nav-link>
