@@ -72,10 +72,14 @@
                     </x-slot>
                 </x-dropdown>
                 @else
-                    <div class="space-x-4">
-                        <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
+                    <div class="flex items-center gap-3 ms-4">
+                        <a href="{{ route('login') }}" class="text-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors px-3 py-2">
+                            {{ __('Log in') }}
+                        </a>
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Register</a>
+                            <a href="{{ route('register') }}" class="text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 px-5 py-2 rounded-full shadow-md hover:shadow-lg transition-all hover:-translate-y-0.5">
+                                {{ __('Register') }}
+                            </a>
                         @endif
                     </div>
                 @endauth
@@ -146,12 +150,12 @@
             </div>
             @else
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('login')">
-                    {{ __('Log in') }}
+                <x-responsive-nav-link :href="route('login')" class="flex items-center gap-2">
+                    <x-lucide-log-in class="w-4 h-4" /> {{ __('Log in') }}
                 </x-responsive-nav-link>
                 @if (Route::has('register'))
-                    <x-responsive-nav-link :href="route('register')">
-                        {{ __('Register') }}
+                    <x-responsive-nav-link :href="route('register')" class="flex items-center gap-2 font-bold text-indigo-600 dark:text-indigo-400">
+                        <x-lucide-user-plus class="w-4 h-4" /> {{ __('Register') }}
                     </x-responsive-nav-link>
                 @endif
             </div>
