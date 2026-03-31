@@ -11,11 +11,12 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $revenue = Order::where('status', 'paid')->sum('total_price');
+        $revenue = Order::whereIn('status', ['paid', 'shipped', 'delivered'])->sum('total_price');
         $ordersCount = Order::count();
         $productsCount = Product::count();
-        $recentOrders = Order::with('user')->latest()->take(5)->get();
+        $incomingOrdersCount = Order::where('status', 'paid')->count();
+        $recentOrders = Order::with('user')->latest()->take(8)->get();
 
-        return view('admin.dashboard', compact('revenue', 'ordersCount', 'productsCount', 'recentOrders'));
+        return view('admin.dashboard', compact('revenue', 'ordersCount', 'productsCount', 'incomingOrdersCount', 'recentOrders'));
     }
 }
