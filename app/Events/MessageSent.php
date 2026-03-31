@@ -54,12 +54,21 @@ class MessageSent implements ShouldBroadcastNow
      */
     public function broadcastWith(): array
     {
+        // Must reload the relationship if not eager-loaded
+        $this->message->loadMissing('order');
+
         return [
             'id' => $this->message->id,
             'content' => $this->message->content,
             'isAdmin' => $this->message->sender_id != $this->message->user_id,
             'time' => $this->message->created_at->format('H:i'),
-            'isRead' => (bool)$this->message->is_read
+            'isRead' => (bool)$this->message->is_read,
+            'order' => $this->message->order ? [
+                'id' => $this->message->order->id,
+                'order_number' => 'ORD-' . str_pad($this->message->order->id, 4, '0', STR_PAD_LEFT),
+                'total_price' => $this->message->order->total_price,
+                'status' => $this->message->order->status,
+            ] : null,
         ];
     }
 }

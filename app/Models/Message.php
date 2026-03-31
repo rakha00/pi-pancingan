@@ -14,11 +14,17 @@ class Message extends Model
         'sender_id',
         'content',
         'is_read',
+        'order_id',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
     }
 
     public function sender()
