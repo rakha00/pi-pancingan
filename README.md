@@ -1,59 +1,125 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Aplikasi E-Commerce & Layanan Pelanggan Pancingan 🎣
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi ini adalah platform E-Commerce berbasis **Laravel 12** yang dikhususkan untuk penjualan perlengkapan/alat pancing. Aplikasi ini dirancang tidak hanya untuk mengelola katalog produk dan memproses pesanan, namun juga memiliki keunggulan pada sistem **Live Chat Real-Time** yang intensif antara pelanggan dan admin.
 
-## About Laravel
+## 🌟 Fitur Utama
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### 1. Katalog & Manajemen Produk
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Kategori Produk**: Pengelolaan kategori alat pancing (misal: joran, kail, umpan, dsb).
+- **Manajemen Produk**: Admin dapat menambah, mengubah, dan menghapus produk beserta detail harganya.
+- **Tema Terang & Gelap (Dark Mode)**: Mendukung mode gelap (_dark mode_) pada antarmuka admin dan klien untuk kenyamanan visual.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 2. Transaksi & Pembayaran Terintegrasi
 
-## Learning Laravel
+- **Sistem Pesanan (Order)**: Kemampuan sistem menampung dan memantau status pesanan (Pending, Paid, Canceled, dsb).
+- **Pembayaran Otomatis**: Layanan integrasi dengan _Payment Gateway_ **Midtrans** (melalui Snap Token) guna mendeteksi pembayaran yang berhasil atau kedaluwarsa secara instan.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### 3. Live Chat & Order Referencing (Real-Time)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **WebSockets via Laravel Reverb**: Pesan dikirim secara instan (sekedipan mata) antara pelanggan dan operator tanpa perlu me-_refresh_ halaman _(No HTTP Polling)_.
+- **Pemisahan Sesi Customer/Admin**: Setiap pelanggan memiliki ruang obrolan (_chat room_) pribadi dengan Admin. Admin menggunakan antarmuka khusus untuk menjawab puluhan pelanggan.
+- **Order Linking / Order Attachment**: Pelanggan atau admin dapat **menautkan pesanan** (melampirkan referensi pesanan berupa ID, Status, dan Total Harga) secara langsung ke dalam gelembung obrolan (_bubble chat_). Hal ini sangat mempermudah pelayanan bila terjadi komplain, pelacakan resi, atau pertanyaan garansi.
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 💻 Tech Stack
 
-### Premium Partners
+- **Backend**: PHP 8.3 & Laravel 12
+- **Frontend**: Tailwind CSS v3, Alpine.js, Blade Templates (Laravel Breeze Backend)
+- **Database**: MySQL / SQLite.
+- **WebSockets**: Laravel Reverb + Laravel Echo.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+---
 
-## Contributing
+## 🚀 Panduan Instalasi Lokal
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Ikuti langkah-langkah di bawah ini untuk menjalankan aplikasi ini secara lokal di komputer Anda.
 
-## Code of Conduct
+### Persyaratan Sistem
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- [PHP](https://www.php.net/downloads) (Versi 8.2 atau lebih baru)
+- [Composer](https://getcomposer.org/)
+- [Node.js / NPM](https://nodejs.org/en/)
+- [MySQL](https://www.mysql.com/) atau MariaDB (atau bisa juga menggunakan _driver_ `sqlite`)
 
-## Security Vulnerabilities
+### Langkah-langkah Instalasi
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+1. **Clone Repositori Ini**
+   Silakan unduh atau lakukan clone repositori ini ke komputer Anda.
 
-## License
+    ```bash
+    git clone <url-repositori>
+    cd pi-pancingan
+    ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+2. **Instalasi Dependensi PHP & JavaScript**
+
+    ```bash
+    composer install
+    npm install
+    ```
+
+3. **Konfigurasi Environment (`.env`)**
+   Salin berkas konfigurasi bawaan Laravel:
+
+    ```bash
+    cp .env.example .env
+    ```
+
+    **PENTING:** Buka file `.env` menggunakan _text editor_ dan atur konfigurasi berikut:
+    - Generate _Application Key_:
+        ```bash
+        php artisan key:generate
+        ```
+    - Atur kredensial **Database** Anda:
+        ```env
+        DB_CONNECTION=mysql
+        DB_HOST=127.0.0.1
+        DB_PORT=3306
+        DB_DATABASE=pancingan_db
+        DB_USERNAME=root
+        DB_PASSWORD=
+        ```
+    - Atur Driver _Broadcast_ ke **Reverb**:
+        ```env
+        BROADCAST_CONNECTION=reverb
+        CACHE_STORE=database
+        QUEUE_CONNECTION=database
+        ```
+    - Apabila diperlukan, masukkan Kunci API **Midtrans** Anda di _env_ untuk mengaktifkan fungsi transaksi asli.
+
+4. **Jalankan Migrasi Database**
+   Buat semua struktur tabel beserta isiannya:
+
+    ```bash
+    php artisan migrate
+    ```
+
+    _(Opsional)_ Jika repositori ini telah dilengkapi dengan seeder produk/admin, jalankan:
+    `php artisan migrate --seed`
+
+5. **Lakukan Build Frontend Assets (Tailwind & Alpine) & Jalankan Server**
+   Agar tampilan CSS _(Tailwind Mode)_ dan Javascript dapat di-_compile_:
+
+    ```bash
+    npm run build
+    # atau untuk mode pengembangan / hot-reload:
+    npm run dev
+    ```
+
+6. **Menjalankan HTTP Framework & Server WebSocket (Laravel Reverb)**
+   Anda perlu membuka **dua terminal** secara terpisah untuk menjalankan aplikasi PHP seutuhnya:
+    - **Terminal 1** (Aplikasi HTTP Utama):
+        ```bash
+        php artisan serve
+        ```
+    - **Terminal 2** (Real-Time Service - WebSocket):
+        ```bash
+        php artisan reverb:start
+        ```
+
+7. **Aplikasi Siap Digunakan! 🎉**
+   Buka _browser_ pilihan Anda dan akses navigasi alamat lokal berikut: `http://127.0.0.1:8000`
+
+---
