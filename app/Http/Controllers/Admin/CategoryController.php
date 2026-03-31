@@ -11,7 +11,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::latest()->paginate(10);
+        $categories = Category::withCount('products')->latest()->paginate(10);
         return view('admin.categories.index', compact('categories'));
     }
 
@@ -24,12 +24,18 @@ class CategoryController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|unique:categories,slug|max:255',
         ]);
+
+        $slug = Str::slug($request->name);
+        
+        // Ensure slug is unique
+        if (Category::where('slug', $slug)->exists()) {
+            $slug = $slug . '-' . time();
+        }
 
         Category::create([
             'name' => $request->name,
-            'slug' => $request->slug ?: Str::slug($request->name),
+            'slug' => $slug,
         ]);
 
         return redirect()->route('admin.categories.index')->with('success', 'Category created successfully.');
@@ -44,12 +50,17 @@ class CategoryController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:categories,slug,' . $category->id,
         ]);
+
+        $slug = Str::slug($request->name);
+        
+        if (Category::where('slug', $slug)->where('id', '!=', $category->id)->exists()) {
+            $slug = $slug . '-' . time();
+        }
 
         $category->update([
             'name' => $request->name,
-            'slug' => $request->slug ?: Str::slug($request->name),
+            'slug' => $slug,
         ]);
 
         return redirect()->route('admin.categories.index')->with('success', 'Category updated successfully.');

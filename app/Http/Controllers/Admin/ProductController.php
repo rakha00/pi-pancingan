@@ -11,9 +11,15 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with('category')->latest()->paginate(10);
+        $query = Product::with('category')->latest();
+        
+        if ($request->has('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+        
+        $products = $query->paginate(10)->appends($request->all());
         return view('admin.products.index', compact('products'));
     }
 
@@ -28,7 +34,6 @@ class ProductController extends Controller
         $request->validate([
             'category_id' => 'required|exists:categories,id',
             'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|unique:products,slug|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
@@ -40,10 +45,15 @@ class ProductController extends Controller
             $imagePath = $request->file('image_path')->store('products', 'public');
         }
 
+        $slug = Str::slug($request->name);
+        if (Product::where('slug', $slug)->exists()) {
+            $slug = $slug . '-' . time();
+        }
+
         Product::create([
             'category_id' => $request->category_id,
             'name' => $request->name,
-            'slug' => $request->slug ?: Str::slug($request->name),
+            'slug' => $slug,
             'description' => $request->description,
             'price' => $request->price,
             'stock' => $request->stock,
@@ -64,7 +74,6 @@ class ProductController extends Controller
         $request->validate([
             'category_id' => 'required|exists:categories,id',
             'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:products,slug,' . $product->id,
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
@@ -79,10 +88,15 @@ class ProductController extends Controller
             $imagePath = $request->file('image_path')->store('products', 'public');
         }
 
+        $slug = Str::slug($request->name);
+        if (Product::where('slug', $slug)->where('id', '!=', $product->id)->exists()) {
+            $slug = $slug . '-' . time();
+        }
+
         $product->update([
             'category_id' => $request->category_id,
             'name' => $request->name,
-            'slug' => $request->slug ?: Str::slug($request->name),
+            'slug' => $slug,
             'description' => $request->description,
             'price' => $request->price,
             'stock' => $request->stock,
