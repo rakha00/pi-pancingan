@@ -19,6 +19,9 @@
                     <x-nav-link :href="route('orders.index')" :active="request()->routeIs('orders.*')" class="flex items-center gap-2">
                         <x-lucide-package class="w-4 h-4" /> {{ __('Pesanan Saya') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('chat.index')" :active="request()->routeIs('chat.*')" class="flex items-center gap-2">
+                        <x-lucide-message-circle class="w-4 h-4" /> {{ __('Live Chat') }}
+                    </x-nav-link>
                     @endauth
                 </div>
             </div>
@@ -112,6 +115,9 @@
             @auth
             <x-responsive-nav-link :href="route('orders.index')" :active="request()->routeIs('orders.*')">
                 {{ __('Pesanan Saya') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('chat.index')" :active="request()->routeIs('chat.*')">
+                {{ __('Live Chat') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
                 {{ __('Cart') }} ({{ auth()->user()->cartItems()->count() }})

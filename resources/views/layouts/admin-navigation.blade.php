@@ -24,6 +24,9 @@
                     <x-nav-link :href="route('admin.orders.index')" :active="request()->routeIs('admin.orders.*')" class="flex items-center gap-2">
                         <x-lucide-shopping-cart class="w-4 h-4" /> {{ __('Orders') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('admin.chats.index')" :active="request()->routeIs('admin.chats.*')" class="flex items-center gap-2">
+                        <x-lucide-message-square class="w-4 h-4" /> {{ __('Live Chat') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -101,6 +104,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('admin.orders.index')" :active="request()->routeIs('admin.orders.*')">
                 <div class="flex items-center gap-2"><x-lucide-shopping-cart class="w-4 h-4" /> {{ __('Orders') }}</div>
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('admin.chats.index')" :active="request()->routeIs('admin.chats.*')">
+                <div class="flex items-center gap-2"><x-lucide-message-square class="w-4 h-4" /> {{ __('Live Chat') }}</div>
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('home')">
                 <div class="flex items-center gap-2"><x-lucide-store class="w-4 h-4" /> {{ __('Kembali ke Toko') }}</div>
