@@ -19,7 +19,7 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-1">
-                        <button type="button" @click="clearHistory()" class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Bersihkan Riwayat Chat">
+                        <button type="button" @click="showDeleteModal = true" class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Bersihkan Riwayat Chat">
                             <x-lucide-trash-2 class="w-5 h-5" />
                         </button>
                         <a href="{{ route('home') }}" class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
@@ -99,6 +99,48 @@
                         </form>
                     </div>
                 </div>
+                </div>
+                
+                <!-- Delete Confirmation Modal -->
+                <div x-show="showDeleteModal" style="display: none;" class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                    <div x-show="showDeleteModal" x-transition.opacity class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+                  
+                    <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+                      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                        <div x-show="showDeleteModal" 
+                             x-transition:enter="ease-out duration-300" 
+                             x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
+                             x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" 
+                             x-transition:leave="ease-in duration-200" 
+                             x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" 
+                             x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                             @click.away="showDeleteModal = false"
+                             class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg border border-gray-100">
+                          <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                            <div class="sm:flex sm:items-start">
+                              <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10 border border-red-200">
+                                <x-lucide-alert-triangle class="h-6 w-6 text-red-600" />
+                              </div>
+                              <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">Hapus Riwayat Chat</h3>
+                                <div class="mt-2">
+                                  <p class="text-sm text-gray-500">Apakah Anda yakin ingin menghapus seluruh riwayat chat ini? Semua pesan akan hilang dari layar Anda. Tindakan ini tidak dapat dibatalkan.</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                            <button type="button" @click="executeClearHistory" :disabled="clearing" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto disabled:opacity-50 disabled:cursor-not-allowed">
+                              <x-lucide-loader-2 class="w-4 h-4 mr-2 animate-spin" x-show="clearing" style="display: none;" />
+                              <span x-text="clearing ? 'Menghapus...' : 'Ya, Hapus'"></span>
+                            </button>
+                            <button type="button" @click="showDeleteModal = false" :disabled="clearing" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Batal</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
             </div>
         </div>
     </div>
@@ -111,6 +153,8 @@
                 sending: false,
                 selectedOrderId: '',
                 showOrderSelect: false,
+                showDeleteModal: false,
+                clearing: false,
                 customerId: {{ auth()->id() }},
                 
                 init() {
@@ -182,11 +226,8 @@
                     }
                 },
                 
-                async clearHistory() {
-                    if (!confirm('Yakin ingin membersihkan semua riwayat chat ini? (Admin tetap dapat melihat riwayatnya)')) {
-                        return;
-                    }
-                    
+                async executeClearHistory() {
+                    this.clearing = true;
                     try {
                         const response = await fetch('{{ route('chat.clear') }}', {
                             method: 'DELETE',
@@ -198,10 +239,13 @@
                         
                         if (response.ok) {
                             this.messages = [];
+                            this.showDeleteModal = false;
                         }
                     } catch (error) {
                         console.error('Error clearing chat history:', error);
                         alert('Gagal membersihkan riwayat chat.');
+                    } finally {
+                        this.clearing = false;
                     }
                 }
             }
