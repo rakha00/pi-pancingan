@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="py-12 bg-gray-50 min-h-screen">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-lg sm:rounded-2xl border border-gray-100 flex flex-col h-[700px]">
+            <div x-data="chatComponent()" x-init="init()" class="bg-white overflow-hidden shadow-lg sm:rounded-2xl border border-gray-100 flex flex-col h-[700px]">
                 <!-- Header -->
                 <div class="p-4 border-b border-gray-100 bg-white flex items-center justify-between z-10 sticky top-0">
                     <div class="flex items-center gap-3">
@@ -18,13 +18,18 @@
                             </p>
                         </div>
                     </div>
-                    <a href="{{ route('home') }}" class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
-                        <x-lucide-x class="w-5 h-5" />
-                    </a>
+                    <div class="flex items-center gap-1">
+                        <button type="button" @click="clearHistory()" class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors" title="Bersihkan Riwayat Chat">
+                            <x-lucide-trash-2 class="w-5 h-5" />
+                        </button>
+                        <a href="{{ route('home') }}" class="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">
+                            <x-lucide-x class="w-5 h-5" />
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Chat Area (Alpine JS Component) -->
-                <div x-data="chatComponent()" x-init="init()" class="flex-grow flex flex-col overflow-hidden bg-gray-50/50">
+                <div class="flex-grow flex flex-col overflow-hidden bg-gray-50/50">
                     
                     <!-- Messages List -->
                     <div class="flex-grow overflow-y-auto p-4 md:p-6 space-y-4" id="chat-messages" x-ref="messagesContainer">
@@ -174,6 +179,29 @@
                         console.error("Error sending message:", error);
                     } finally {
                         this.sending = false;
+                    }
+                },
+                
+                async clearHistory() {
+                    if (!confirm('Yakin ingin membersihkan semua riwayat chat ini? (Admin tetap dapat melihat riwayatnya)')) {
+                        return;
+                    }
+                    
+                    try {
+                        const response = await fetch('{{ route('chat.clear') }}', {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Accept': 'application/json'
+                            }
+                        });
+                        
+                        if (response.ok) {
+                            this.messages = [];
+                        }
+                    } catch (error) {
+                        console.error('Error clearing chat history:', error);
+                        alert('Gagal membersihkan riwayat chat.');
                     }
                 }
             }

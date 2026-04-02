@@ -14,6 +14,7 @@ class Message extends Model
         'sender_id',
         'content',
         'is_read',
+        'is_deleted_by_customer',
         'order_id',
     ];
 

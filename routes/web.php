@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/chat', [App\Http\Controllers\ChatController::class, 'index'])->name('chat.index');
     Route::post('/chat', [App\Http\Controllers\ChatController::class, 'store'])->name('chat.store');
     Route::get('/chat/messages', [App\Http\Controllers\ChatController::class, 'getMessages'])->name('chat.messages');
+    Route::delete('/chat/clear', [App\Http\Controllers\ChatController::class, 'clearHistory'])->name('chat.clear');
 });
 
 Route::post('/midtrans/callback', [CheckoutController::class, 'callback'])->name('midtrans.callback');

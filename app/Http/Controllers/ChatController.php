@@ -57,22 +57,35 @@ class ChatController extends Controller
             ->whereColumn('sender_id', '!=', 'user_id')
             ->update(['is_read' => true]);
 
-        $messages = Message::with('order')->where('user_id', $customer->id)->oldest()->get()->map(function($msg) {
-            return [
-                'id' => $msg->id,
-                'content' => $msg->content,
-                'isAdmin' => $msg->sender_id != $msg->user_id,
-                'time' => $msg->created_at->format('H:i'),
-                'isRead' => (bool)$msg->is_read,
-                'order' => $msg->order ? [
-                    'id' => $msg->order->id,
-                    'order_number' => 'ORD-' . str_pad($msg->order->id, 4, '0', STR_PAD_LEFT),
-                    'total_price' => $msg->order->total_price,
-                    'status' => $msg->order->status,
-                ] : null
-            ];
-        });
+        $messages = Message::with('order')
+            ->where('user_id', $customer->id)
+            ->where('is_deleted_by_customer', false)
+            ->oldest()
+            ->get()
+            ->map(function($msg) {
+                return [
+                    'id' => $msg->id,
+                    'content' => $msg->content,
+                    'isAdmin' => $msg->sender_id != $msg->user_id,
+                    'time' => $msg->created_at->format('H:i'),
+                    'isRead' => (bool)$msg->is_read,
+                    'order' => $msg->order ? [
+                        'id' => $msg->order->id,
+                        'order_number' => 'ORD-' . str_pad($msg->order->id, 4, '0', STR_PAD_LEFT),
+                        'total_price' => $msg->order->total_price,
+                        'status' => $msg->order->status,
+                    ] : null
+                ];
+            });
 
         return response()->json($messages);
+    }
+
+    public function clearHistory()
+    {
+        Message::where('user_id', auth()->id())
+            ->update(['is_deleted_by_customer' => true]);
+
+        return response()->json(['success' => true]);
     }
 }
