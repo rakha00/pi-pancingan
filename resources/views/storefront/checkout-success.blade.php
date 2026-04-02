@@ -41,10 +41,10 @@
                         document.getElementById('pay-button').onclick = function(){
                             snap.pay('{{ $order->snap_token }}', {
                                 onSuccess: function(result){
-                                    window.location.href = "{{ route('home') }}";
+                                    window.location.href = "{{ route('orders.index') }}";
                                 },
                                 onPending: function(result){
-                                    window.location.href = "{{ route('home') }}";
+                                    window.location.href = "{{ route('orders.index') }}";
                                 },
                                 onError: function(result){
                                     alert("Payment failed!");
