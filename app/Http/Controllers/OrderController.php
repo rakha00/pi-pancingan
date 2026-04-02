@@ -16,7 +16,7 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        if ($order->user_id !== auth()->id()) {
+        if ((int) $order->user_id !== (int) auth()->id()) {
             abort(403);
         }
         $order->load(['items.product', 'reports']);
@@ -25,7 +25,7 @@ class OrderController extends Controller
 
     public function confirm(Order $order)
     {
-        if ($order->user_id !== auth()->id() || $order->status !== 'shipped') {
+        if ((int) $order->user_id !== (int) auth()->id() || $order->status !== 'shipped') {
             abort(403);
         }
 
@@ -35,7 +35,7 @@ class OrderController extends Controller
 
     public function report(Request $request, Order $order)
     {
-        if ($order->user_id !== auth()->id() || $order->status !== 'shipped') {
+        if ((int) $order->user_id !== (int) auth()->id() || $order->status !== 'shipped') {
             abort(403);
         }
 
