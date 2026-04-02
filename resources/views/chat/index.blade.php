@@ -98,8 +98,7 @@
                             </div>
                         </form>
                     </div>
-                </div>
-                </div>
+                </div> <!-- Closes Chat Area -->
                 
                 <!-- Delete Confirmation Modal -->
                 <div x-show="showDeleteModal" style="display: none;" class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -139,11 +138,10 @@
                         </div>
                       </div>
                     </div>
-                  </div>
-                  
-            </div>
-        </div>
-    </div>
+                </div> <!-- Closes Modal -->
+            </div> <!-- Closes x-data chatComponent loop -->
+        </div> <!-- Closes max-w-4xl -->
+    </div> <!-- Closes py-12 -->
 
     <script>
         function chatComponent() {
